@@ -1,0 +1,14 @@
+{
+  "EMR":[
+    {"firstName":"John", "lastName":"Doe", "BloodType":"O+"},
+    {"firstName":"Billy", "lastName":"Bags", "BloodType":"A+"},
+    {"firstName":"Horace", "lastName":"Borace", "BloodType":"O+"},
+    {"firstName":"Eugene", "lastName":"Krabs", "BloodType":"A-"},
+    {"firstName":"Jack", "lastName":"Jingle", "BloodType":"B+"},
+    {"firstName":"Thomas", "lastName":"Bombus", "BloodType":"O+"},
+    {"firstName":"Andre", "lastName":"Cousin", "BloodType":"B+"},
+    {"firstName":"Blamont", "lastName":"Blenkins", "BloodType":"A-"},
+    {"firstName":"Anna", "lastName":"Smith", "BloodType":"A-"},
+    {"firstName":"Peter", "lastName":"Jones", "BloodType":"O-"}
+  ]
+}
