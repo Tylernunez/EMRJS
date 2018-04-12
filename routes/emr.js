@@ -1,16 +1,27 @@
 var express = require('express');
-var router = express.Router();
+var app = express();
 var fs = require("fs");
+var bodyParser = require('body-parser');
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
-router.get('/', function(req, res, next) {
+app.get('/', function(req, res) {
     var contents = fs.readFileSync("public/EMR.json");
-    res.send(contents);
+    var jsonData = JSON.parse(contents);
+    res.json(jsonData);
 });
 
-router.get('/:id', function(req, res, next) {
+app.get('/:id', function(req, res) {
     var contents = fs.readFileSync("public/EMR.json");
     var parsed = JSON.parse(contents);
-    res.send(parsed.EMR[id].firstName + " " + parsed.EMR[id].lastName );
+    res.json(parsed.EMR[req.params.id]);
 });
 
-module.exports = router;
+app.post('/', function(req, res) {
+    var firstName = req.body.fName;
+    var lastName = req.body.lName;
+    var bloodType = req.body.BType
+    res.send("First Name: " + firstName + " Last Name: " + lastName + " Blood Type: " + bloodType);
+});
+
+module.exports = app;
