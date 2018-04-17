@@ -47,10 +47,4 @@ function enterEMRData(req, res){
 
 app.use('/api', router);
 
-app.listen(5000, function(err) {
-    if (err) {
-        console.log(chalk.red(err));
-    } else {
-        console.log(chalk.blue('I am listening on 3000'));
-    }
-});
+app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
