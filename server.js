@@ -30,7 +30,7 @@ router.get('/:id', function(req, res) {
 
 router.post('/', function(req, res) {
     enterEMRData(req,res);
-    res.send("Your data has been added.");
+    res.send("Your data has been added: firstName: " + req.body.fName + "lastName: "+ req.body.lName + "BloodType: " + req.body.BType);
 });
 
 function enterEMRData(req, res){
