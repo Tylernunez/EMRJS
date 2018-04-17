@@ -47,7 +47,7 @@ function enterEMRData(req, res){
 
 app.use('/api', router);
 
-app.listen(3000, function(err) {
+app.listen(5000, function(err) {
     if (err) {
         console.log(chalk.red(err));
     } else {
