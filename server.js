@@ -60,7 +60,7 @@ router.get('/', function(req, res) {
 router.get('/:_id', function(req, res) {
     db.collection(EMR_COLLECTION).findOne({ _id: new ObjectID(req.params.id) }, function(err, doc) {
         if (err) {
-            handleError(res, err.message, "Failed to get contact");
+            handleError(res, err.message, "Failed to get EMR");
         } else {
             res.status(200).json(doc);
         }
@@ -70,13 +70,13 @@ router.get('/:_id', function(req, res) {
 router.post('/', function(req, res) {
     var newEMR = req.body;
 
-    if (!req.body.name) {
-        handleError(res, "Invalid user input", "Must provide a name.", 400);
+    if (!req.body.firstName) {
+        handleError(res, "Invalid user input", "Must provide a First name.", 400);
     }
 
     db.collection(EMR_COLLECTION).insertOne(newEMR, function(err, doc) {
         if (err) {
-            handleError(res, err.message, "Failed to create new contact.");
+            handleError(res, err.message, "Failed to create new EMR.");
         } else {
             res.status(201).json(doc.ops[0]);
         }
