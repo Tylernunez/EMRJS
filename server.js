@@ -122,6 +122,7 @@ mongodb.MongoClient.connect(process.env.MONGODB_URI || "mongodb://localhost:2701
 
 app.use('/api', router);
 
+app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
 app.listen(3000, function(err) {
     if (err) {
         console.log(chalk.red(err));
