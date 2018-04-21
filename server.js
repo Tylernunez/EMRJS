@@ -12,13 +12,6 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
-function EMR(id, fName, lName, bloodType){
-    this._id = id;
-    this.firstName = fName;
-    this.lastName = lName;
-    this.BloodType = bloodType;
-}
-
 var db;
 
 // Connect to the database before starting the application server.
@@ -57,7 +50,7 @@ router.get('/', function(req, res) {
     });
 });
 
-router.get('/:_id', function(req, res) {
+router.get('/:id', function(req, res) {
     db.collection(EMR_COLLECTION).findOne({ _id: new ObjectID(req.params.id) }, function(err, doc) {
         if (err) {
             handleError(res, err.message, "Failed to get EMR");
@@ -83,7 +76,7 @@ router.post('/', function(req, res) {
     });
 });
 
-router.put("/:_id", function(req, res) {
+router.put("/:id", function(req, res) {
 
     var updateDoc = req.body;
     delete updateDoc._id;
@@ -98,7 +91,7 @@ router.put("/:_id", function(req, res) {
     });
 });
 
-router.delete("/:_id", function(req, res) {
+router.delete("/:id", function(req, res) {
 
     db.collection(EMR_COLLECTION).deleteOne({_id: new ObjectID(req.params.id)}, function(err, result) {
         if (err) {
