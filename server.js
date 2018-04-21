@@ -40,7 +40,7 @@ function handleError(res, reason, message, code) {
     res.status(code || 500).json({"error": message});
 }
 
-router.get('/', function(req, res) {
+router.get('/emr', function(req, res) {
     db.collection(EMR_COLLECTION).find({}).toArray(function(err, docs) {
         if (err) {
             handleError(res, err.message, "Failed to get EMRs.");
@@ -50,7 +50,7 @@ router.get('/', function(req, res) {
     });
 });
 
-router.get('/:id', function(req, res) {
+router.get('/emr/:id', function(req, res) {
     db.collection(EMR_COLLECTION).findOne({ _id: new ObjectID(req.params.id) }, function(err, doc) {
         if (err) {
             handleError(res, err.message, "Failed to get EMR");
@@ -60,7 +60,7 @@ router.get('/:id', function(req, res) {
     });
 });
 
-router.post('/', function(req, res) {
+router.post('/emr', function(req, res) {
     var newEMR = req.body;
 
     if (!req.body.firstName) {
@@ -76,7 +76,7 @@ router.post('/', function(req, res) {
     });
 });
 
-router.put("/:id", function(req, res) {
+router.put("/emr/:id", function(req, res) {
 
     var updateDoc = req.body;
     delete updateDoc._id;
@@ -91,7 +91,7 @@ router.put("/:id", function(req, res) {
     });
 });
 
-router.delete("/:id", function(req, res) {
+router.delete("/emr/:id", function(req, res) {
 
     db.collection(EMR_COLLECTION).deleteOne({_id: new ObjectID(req.params.id)}, function(err, result) {
         if (err) {
