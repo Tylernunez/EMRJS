@@ -7,6 +7,7 @@ var fs = require('fs');
 var mongodb = require("mongodb");
 var ObjectID = mongodb.ObjectID;
 var EMR_COLLECTION = "EMRs";
+
 app.use(bodyParser.urlencoded({
     extended: true
 }));
@@ -17,6 +18,29 @@ function EMR(id, fName, lName, bloodType){
     this.lastName = lName;
     this.BloodType = bloodType;
 }
+
+var db;
+
+// Connect to the database before starting the application server.
+mongodb.MongoClient.connect(process.env.MONGODB_URI || "mongodb://tNunez:emrdb415@ds153869.mlab.com:53869/heroku_q5dbnlsf", function (err, client) {
+    if (err) {
+        console.log(err);
+        process.exit(1);
+    }
+
+
+    // Save database object from the callback for reuse.
+    db = client.db();
+    console.log("Database connection ready");
+
+    app.use('/api', router);
+
+    var server = app.listen(process.env.PORT || 8080, function () {
+        var port = server.address().port;
+        console.log("App now running on port", port);
+    });
+});
+
 
 function handleError(res, reason, message, code) {
     console.log("ERROR: " + reason);
@@ -84,50 +108,5 @@ router.delete("/:_id", function(req, res) {
         }
     });
 
-});
-
-function enterEMRData(req, res){
-
-
-    var firstName = req.body.fName;
-    var lastName = req.body.lName;
-    var bloodType = req.body.BType;
-
-    var contents = fs.readFileSync("EMR.json");
-    var parsed = JSON.parse(contents);
-    var newData = {
-        "id" : parsed['id'.length++],
-        "firstName" : firstName,
-        "lastName" : lastName,
-        "BloodType" : bloodType
-    };
-
-    parsed['EMR'].push(newData);
-    contents = JSON.stringify(parsed);
-    fs.writeFileSync("EMR.json",contents);0
-}
-
-var db;
-
-// Connect to the database before starting the application server.
-mongodb.MongoClient.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/test", function (err, client) {
-    if (err) {
-        console.log(err);
-        process.exit(1);
-    }
-
-    // Save database object from the callback for reuse.
-    db = client.db();
-    console.log("Database connection ready");
-
-app.use('/api', router);
-
-app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
-app.listen(3000, function(err) {
-    if (err) {
-        console.log(chalk.red(err));
-    } else {
-        console.log(chalk.blue('I am listening on 3000'));
-    }
 });
 
