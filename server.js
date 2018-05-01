@@ -51,12 +51,14 @@ router.get('/emr', function(req, res) {
 });
 
 router.get('/emr/:id', function(req, res) {
-    db.collection(EMR_COLLECTION).findOne({ _id: new ObjectID(req.params.id) }, function(err, doc) {
+    db.collection(EMR_COLLECTION).findOne({$and:[{ _id: new ObjectID(req.params.id)}, {isLocked : "false"}]}, function(err, doc) {
         if (err) {
             handleError(res, err.message, "Failed to get EMR");
         } else {
-            res.status(200).json(doc);
-        }
+                db.collection(EMR_COLLECTION).updateOne({_id: new ObjectID(req.params.id)}, {$set: {"isLocked" : true}});
+                console.log("Lock");
+                res.status(200).json(doc);
+            }
     });
 });
 
@@ -81,11 +83,12 @@ router.put("/emr/:id", function(req, res) {
     var updateDoc = req.body;
     delete updateDoc.id;
 
-    db.collection(EMR_COLLECTION).replaceOne({_id: new ObjectID(req.params.id)}, updateDoc, function(err, doc) {
+    db.collection(EMR_COLLECTION).replaceOne({$and: [{ _id: new ObjectID(req.params.id) }, {isLocked : "true"}]}, updateDoc, function(err, doc) {
         if (err) {
             handleError(res, err.message, "Failed to update EMR : " + updateDoc.firstName + " " + updateDoc.lastName + " " + updateDoc.BloodType);
         } else {
             updateDoc._id = req.params.id;
+            db.collection(EMR_COLLECTION).updateOne({_id: new ObjectID(req.params.id)}, {$set: {"isLocked" : false}});
             res.status(200).json(updateDoc);
         }
     });
